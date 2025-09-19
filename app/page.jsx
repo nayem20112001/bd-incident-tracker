@@ -7,8 +7,8 @@ import IncidentCard from "../components/incident-card" // file is at components/
 async function getIncidents() {
   const { data, error } = await supabase
     .from("incidents")
-    .select("id, event_date, category, location, title, reported_dead, reported_injured")
-    .order("event_date", { ascending: false })
+   .select("id, event_date, category, location, title, reported_dead, reported_injured")
+.order("event_date", { ascending: false })
     .limit(24)
 
   return { error: error ? error.message : null, rows: data || [] }
