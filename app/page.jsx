@@ -1,61 +1,41 @@
-"use client";
+// app/page.tsx
+import { supabase } from "@/lib/supabaseClient"
+import IncidentCard from "@/components/incident-card"
 
-import { useEffect, useState } from "react";
-import { getBrowserClient } from "../lib/supabaseClient";
+async function getIncidents() {
+  const { data, error } = await supabase
+    .from("incidents")
+    // IMPORTANT: event_date (NOT "date")
+    .select("id, event_date, category, location, title, reported_dead, reported_injured")
+    .order("event_date", { ascending: false })
+    .limit(24)
 
-export default function Home() {
-  const [rows, setRows] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  if (error) {
+    // This will render the error on the page so we don't guess in the dark
+    return { error: error.message, rows: [] as any[] }
+  }
+  return { error: null as string | null, rows: data || [] }
+}
 
-  useEffect(() => {
-    const client = getBrowserClient();
-    if (!client) {
-      setError("Missing NEXT_PUBLIC_SUPABASE_* env vars");
-      setLoading(false);
-      return;
-    }
-    (async () => {
-      const { data, error } = await client
-        .from("incidents")
-        .select("*")
-        .order("date", { ascending: false })
-        .limit(50);
-      if (error) setError(error.message);
-      else setRows(data || []);
-      setLoading(false);
-    })();
-  }, []);
+export default async function HomePage() {
+  const { error, rows } = await getIncidents()
 
   return (
-    <main style={{ maxWidth: 780, margin: "40px auto", padding: "0 20px", fontFamily: "system-ui, sans-serif" }}>
-      <h1>BD Incident Tracker</h1>
-      <p style={{ opacity: 0.75, marginTop: 4 }}>Phase B: basic list</p>
+    <div>
+      <section className="mb-4">
+        <h1 className="text-2xl font-bold mb-1">BD Incident Tracker</h1>
+        <p className="text-sm text-gray-600">Phase C: basic list</p>
+        {error && <p className="text-red-600 mt-2">Error: {error}</p>}
+      </section>
 
-      {loading && <p>Loading…</p>}
-      {error && <p style={{ color: "crimson" }}>Error: {error}</p>}
-
-      <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
-        {rows.map((r) => (
-          <li key={r.id} style={{ padding: "12px 0", borderBottom: "1px solid #e5e7eb" }}>
-            <div style={{ fontSize: 14, opacity: 0.7 }}>
-              {r.date} • {r.location || "Unknown"} • {r.category || "uncategorized"}
-            </div>
-            <div style={{ fontWeight: 600 }}>{r.title || "(no title)"}</div>
-            {r.source_url && (
-              <a href={r.source_url} target="_blank" rel="noreferrer" style={{ fontSize: 14 }}>
-                Source ↗
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      {!loading && rows.length === 0 && (
-        <p style={{ marginTop: 16, opacity: 0.8 }}>
-          No incidents yet. Add one in Supabase → Table Editor → <b>incidents</b> → Insert row, then refresh.
-        </p>
-      )}
-    </main>
-  );
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {rows.map((i: any) => <IncidentCard key={i.id} i={i} />)}
+        {rows.length === 0 && !error && (
+          <div className="text-sm text-gray-600">
+            No incidents yet. Add one in Supabase → Table Editor → <b>incidents</b> → Insert row, then refresh.
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
