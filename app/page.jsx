@@ -1,7 +1,8 @@
 // app/page.jsx  (plain JS version)
 
-import { supabase } from "@/lib/supabaseClient"
-import IncidentCard from "@/components/incident-card"
+import { supabase } from "./lib/supabaseClient"      // file is at app/lib/supabaseClient.js
+import IncidentCard from "../components/incident-card" // file is at components/incident-card.jsx
+
 
 async function getIncidents() {
   const { data, error } = await supabase
