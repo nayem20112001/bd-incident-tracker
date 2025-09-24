@@ -1,8 +1,12 @@
-// app/page.jsx (App Router, plain JS)
+// app/page.jsx (App Router, fixed with Suspense)
 
-import { supabase } from "./lib/supabaseClient";               // app/lib/supabaseClient.js
-import IncidentCard from "../components/incident-card";        // components/incident-card.jsx
+import { Suspense } from "react";                          // ✅ required for useSearchParams consumer
+import { supabase } from "./lib/supabaseClient";           // app/lib/supabaseClient.js
+import IncidentCard from "../components/incident-card";    // components/incident-card.jsx
 import DownloadCsvButton from "../components/DownloadCsvButton"; // components/DownloadCsvButton.jsx
+
+// Optional but helpful: prevents static export headaches for dynamic data
+export const dynamic = "force-dynamic";
 
 async function getIncidents() {
   const { data, error } = await supabase
@@ -26,8 +30,10 @@ export default async function HomePage() {
           {error && <p className="text-red-600 mt-2">Error: {error}</p>}
         </div>
 
-        {/* Downloads a CSV using current URL filters (if any) */}
-        <DownloadCsvButton />
+        {/* ✅ Wrap any client component that uses useSearchParams in Suspense */}
+        <Suspense fallback={<span className="text-sm text-gray-500">Preparing CSV…</span>}>
+          <DownloadCsvButton />
+        </Suspense>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
