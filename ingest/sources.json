@@ -1,20 +1,13 @@
 [
-  { "name": "bdnews24 — Bangladesh (XML)", "url": "https://bdnews24.com/bangladesh/?getXmlFeed=true&widgetId=1210&widgetName=rssfeed" },
-  { "name": "bdnews24 — World (XML)", "url": "https://bdnews24.com/world/?getXmlFeed=true&widgetId=1210&widgetName=rssfeed" },
+  { "name": "bdnews24 (EN)",      "url": "https://news.google.com/rss/search?q=site:bdnews24.com&hl=en-BD&gl=BD&ceid=BD:en" },
+  { "name": "Dhaka Tribune (EN)", "url": "https://news.google.com/rss/search?q=site:dhakatribune.com&hl=en-BD&gl=BD&ceid=BD:en" },
+  { "name": "TBS (EN)",           "url": "https://news.google.com/rss/search?q=site:tbsnews.net&hl=en-BD&gl=BD&ceid=BD:en" },
+  { "name": "The Daily Star (EN)","url": "https://news.google.com/rss/search?q=site:thedailystar.net&hl=en-BD&gl=BD&ceid=BD:en" },
 
-  { "name": "The Business Standard — Bangladesh (index)", "url": "https://www.tbsnews.net/tbs-rss" },
-
-  { "name": "Dhaka Tribune — Tribune Report (WordPress feed)", "url": "https://www.dhakatribune.com/author/tribune-report/feed" },
-
-  { "name": "Prothom Alo — POSSIBLE feed (verify)", "url": "http://www.prothomalo.com/feed/" },
-
-  { "name": "Bangla Tribune — homepage (adapter later if feed missing)", "url": "https://www.banglatribune.com/" },
-
-  { "name": "New Age Bangladesh — homepage (adapter later)", "url": "https://www.newagebd.net/" },
-
-  { "name": "UNB — homepage (adapter later)", "url": "https://unb.com.bd/" },
-
-  { "name": "The Daily Observer — homepage (adapter later)", "url": "https://www.observerbd.com/" },
-
-  { "name": "The Financial Express — homepage (adapter later)", "url": "https://thefinancialexpress.com.bd/" }
+  { "name": "Prothom Alo (BN)",   "url": "https://news.google.com/rss/search?q=site:prothomalo.com&hl=bn&gl=BD&ceid=BD:bn" },
+  { "name": "Bangla Tribune (BN)","url": "https://news.google.com/rss/search?q=site:banglatribune.com&hl=bn&gl=BD&ceid=BD:bn" },
+  { "name": "Kaler Kantho (BN)",  "url": "https://news.google.com/rss/search?q=site:kalerkantho.com&hl=bn&gl=BD&ceid=BD:bn" },
+  { "name": "Jugantor (BN)",      "url": "https://news.google.com/rss/search?q=site:jugantor.com&hl=bn&gl=BD&ceid=BD:bn" },
+  { "name": "Samakal (BN)",       "url": "https://news.google.com/rss/search?q=site:samakal.com&hl=bn&gl=BD&ceid=BD:bn" },
+  { "name": "Ittefaq (BN)",       "url": "https://news.google.com/rss/search?q=site:ittefaq.com.bd&hl=bn&gl=BD&ceid=BD:bn" }
 ]
