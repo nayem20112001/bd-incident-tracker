@@ -1,38 +1,42 @@
 def fetch_rss_items(feed_url: str, timeout: int = 25) -> List[Dict[str, str]]:
     import urllib.parse as up
 
-    # Be polite and look like a browser; some feeds are fussy.
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36",
         "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
     }
     r = httpx.get(feed_url, headers=headers, timeout=timeout, follow_redirects=True)
     r.raise_for_status()
-
     soup = BeautifulSoup(r.text, "xml")
     items = soup.find_all(["item", "entry"])
     out = []
 
     def extract_link(node):
-        # 1) prefer atom:link href
+        # 1) atom href, else text of <link>/<id>
+        link = ""
         if node.link and node.link.get("href"):
             link = node.link.get("href").strip()
-        else:
-            # 2) fall back to text of <link> or <id>
-            link = ""
-            if node.link and node.link.text:
-                link = node.link.text.strip()
-            elif node.id and node.id.text:
-                link = node.id.text.strip()
+        elif node.link and node.link.text:
+            link = node.link.text.strip()
+        elif node.id and node.id.text:
+            link = node.id.text.strip()
 
-        # Unwrap Google News redirects: ...&url=<encoded-article-url>
+        # 2) Google News unwrapping: prefer url= param if present
         if "news.google." in link:
             parsed = up.urlparse(link)
             qs = up.parse_qs(parsed.query)
             if "url" in qs and qs["url"]:
                 link = qs["url"][0]
-
+            else:
+                # Fallback: resolve one redirect hop to get publisher URL
+                try:
+                    head = httpx.head(link, headers=headers, timeout=10, follow_redirects=True)
+                    if head.is_redirect:
+                        link = str(head.headers.get("location", link))
+                    else:
+                        link = str(head.url)
+                except Exception:
+                    pass
         return link
 
     for it in items:
