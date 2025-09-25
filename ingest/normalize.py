@@ -19,19 +19,33 @@ def bn2en_digits(s: str) -> str:
 # Minimal keyword mapping for categories (extend later)
 _CATEGORY_KEYWORDS = {
     "road_accident": [
-        "সড়ক দুর্ঘটনা", "সড়ক দুর্ঘটনা", "বাস দুর্ঘটনা", "মাইক্রোবাস", "ট্রাক",
-        "মোটরসাইকেল", "road accident", "bus crash", "truck", "collision"
+        "সড়ক দুর্ঘটনা","সড়ক দুর্ঘটনা","বাস দুর্ঘটনা","মাইক্রোবাস","ট্রাক","মোটরসাইকেল",
+        "হাইওয়ে","নিহত","আহত","ধাক্কা","সংঘর্ষ",
+        "road accident","bus crash","truck crash","collision","highway","overturned","hit-and-run"
     ],
     "fire": [
-        "অগ্নিকাণ্ড", "আগুন", "ভবনে আগুন", "fire", "blaze", "burnt"
+        "অগ্নিকাণ্ড","আগুন","পুড়ে","পুড়ে গেছে","দাহ","ফায়ার সার্ভিস",
+        "fire","blaze","inferno","burnt","factory fire"
     ],
     "crime": [
-        "খুন", "ছিনতাই", "গুম", "robbery", "murder", "homicide", "kidnap"
+        "খুন","গুলি","ছুরিকাঘাত","ডাকাতি","ছিনতাই","গুম","সন্ত্রাস","ধর্ষণ মামলায়",
+        "murder","homicide","shooting","stabbing","robbery","kidnap","abduction","extortion"
+    ],
+    "rape": [
+        "ধর্ষণ","ধর্ষিতা","ধর্ষণের","শ্লীলতাহানি",
+        "rape","sexual assault","molest","gang rape"
+    ],
+    "murder": [
+        "খুন","হত্যা","গলা কাটা","লাশ উদ্ধার",
+        "murder","homicide","body recovered"
     ],
     "flood": [
-        "বন্যা", "জলাবদ্ধতা", "flood", "inundation"
+        "বন্যা","জলাবদ্ধতা","পানিবন্দী","জোয়ার","char","ভেসে গেছে",
+        "flood","inundation","flash flood"
     ],
+    "other": []
 }
+
 
 def map_category(text: str) -> str:
     """Return a coarse category based on BN/EN keywords in the text."""
